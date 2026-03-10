@@ -1,10 +1,10 @@
 # MEEM Gold — Laravel Application
 
-A production-ready Laravel application converted from a legacy PHP proxy API. Provides an admin dashboard, database-driven content, and API endpoints that preserve the original behavior.
+A production-ready Laravel 10.x application converted from a legacy PHP proxy API. Provides an admin dashboard, database-driven content, and API endpoints that preserve the original behavior.
 
 ## Requirements
 
-- PHP 8.2+
+- PHP 8.1+
 - Composer 2.x
 - Node.js 18+ (for asset building)
 - SQLite (default) or MySQL/PostgreSQL
