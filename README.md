@@ -11,6 +11,11 @@ A production-ready Laravel 10.x application converted from a legacy PHP proxy AP
 
 ## Setup
 
+> **Quick setup (runs all steps automatically):**
+> ```bash
+> composer setup
+> ```
+
 ### 1. Install dependencies
 
 ```bash
@@ -38,6 +43,7 @@ MEEM_API_BASE_URL=https://meem.com.my/api/v1
 
 # Gemini AI (for event explanations)
 GEMINI_API_KEY=your_gemini_api_key_here
+# GEMINI_API_URL=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
 ```
 
 ### 3. Create SQLite database (if using SQLite)
@@ -53,7 +59,7 @@ php artisan migrate --seed
 ```
 
 This creates:
-- All tables (users, services, pages, branches, endpoint_configs, endpoint_json_overrides, app_settings, event_caches)
+- All tables (users, services, pages, page_sections, branches, endpoint_configs, endpoint_json_overrides, app_settings, event_caches)
 - Admin user: `admin@meem.com.my` / `12345678`
 - Default services, pages, branches, and endpoint configs
 
@@ -93,6 +99,13 @@ Visit `http://localhost:8000` — you will be redirected to `/login`.
 | POST   | /login    | Authenticate         |
 | POST   | /logout   | Logout               |
 | GET    | /dashboard| Redirects to admin   |
+
+### Profile (authenticated)
+| Method | URL       | Description          |
+|--------|-----------|----------------------|
+| GET    | /profile  | Edit profile         |
+| PATCH  | /profile  | Update profile       |
+| DELETE | /profile  | Delete account       |
 
 ### Admin (authenticated)
 | URL                              | Description               |
@@ -146,11 +159,14 @@ Admins can override any API endpoint's response without code changes:
 
 ```bash
 php artisan test
+# or
+composer test
 ```
 
 ## Project Structure
 
 ```
+api/                 — Legacy PHP proxy files (reference only)
 app/
   Http/
     Controllers/
@@ -158,8 +174,11 @@ app/
       Api/         — API proxy controllers
       Webview/     — Mobile webview controllers
     Requests/Admin/ — Form validation
-  Models/          — Eloquent models
-  Services/        — Business logic
+  Models/          — Eloquent models (User, Service, Page, PageSection,
+                     Branch, EndpointConfig, EndpointJsonOverride,
+                     AppSetting, EventCache)
+  Services/        — Business logic (CustomerProfile, GssPriceHistory,
+                     GssPriceTable, JsonOverride)
 config/
   meem.php         — Upstream API config
   services.php     — Gemini AI config
@@ -171,8 +190,9 @@ resources/views/
   webview/         — Mobile webview Blade pages
   layouts/         — Shared layouts
 routes/
-  web.php          — Web routes (admin + webview)
+  web.php          — Web routes (admin + webview + profile)
   api.php          — API routes
+  auth.php         — Breeze authentication routes
 public/
   icons/           — Service icons
   webview-assets/  — WebView images
