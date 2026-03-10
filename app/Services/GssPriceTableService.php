@@ -15,7 +15,7 @@ class GssPriceTableService
     public function __construct()
     {
         $this->baseUrl = config('meem.base_url', 'https://meem.com.my/api/v1');
-        $this->geminiApiKey = config('services.gemini.api_key', '');
+        $this->geminiApiKey = config('services.gemini.api_key') ?? '';
         $this->geminiApiUrl = config('services.gemini.api_url', 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent');
     }
 

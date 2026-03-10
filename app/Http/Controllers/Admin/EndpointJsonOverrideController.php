@@ -13,11 +13,58 @@ use Illuminate\Http\Request;
 
 class EndpointJsonOverrideController extends Controller
 {
+    public function datatable()
+    {
+        $draw    = intval(request('draw', 0));
+        $start   = intval(request('start', 0));
+        $length  = intval(request('length', 15));
+        $search  = request('search.value', '');
+
+        $query = EndpointJsonOverride::query();
+        $total = EndpointJsonOverride::count();
+
+        if ($search) {
+            $query->where('endpoint_key', 'like', "%{$search}%");
+        }
+
+        $filtered = $query->count();
+
+        $columns  = ['endpoint_key', 'merge_strategy', 'is_active', null];
+        $colIndex = intval(request('order.0.column', 0));
+        $colDir   = request('order.0.dir', 'asc') === 'desc' ? 'desc' : 'asc';
+        $orderCol = $columns[$colIndex] ?? 'endpoint_key';
+        if ($orderCol) {
+            $query->orderBy($orderCol, $colDir);
+        }
+
+        $records = $query->skip($start)->take($length)->get();
+
+        $data = $records->map(function ($o) {
+            $editUrl = route('admin.endpoint-overrides.edit', $o);
+            $badge   = $o->is_active
+                ? '<span class="badge bg-success">Active</span>'
+                : '<span class="badge bg-secondary">Inactive</span>';
+            $actions = '<a href="' . $editUrl . '" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>';
+
+            return [
+                'endpoint_key'   => '<code>' . e($o->endpoint_key) . '</code>',
+                'merge_strategy' => '<span class="badge bg-info text-dark">' . e($o->merge_strategy) . '</span>',
+                'status'         => $badge,
+                'actions'        => $actions,
+            ];
+        });
+
+        return response()->json([
+            'draw'            => $draw,
+            'recordsTotal'    => $total,
+            'recordsFiltered' => $filtered,
+            'data'            => $data,
+        ]);
+    }
+
     public function index()
     {
-        $overrides = EndpointJsonOverride::paginate(20);
-        $endpointKeys = ['customer-profile', 'gss-price-history', 'gss-price-table', 'widget-more-services'];
-        return view('admin.endpoint-overrides.index', compact('overrides', 'endpointKeys'));
+        return view('admin.endpoint-overrides.index');
     }
 
     public function edit(EndpointJsonOverride $endpointOverride)

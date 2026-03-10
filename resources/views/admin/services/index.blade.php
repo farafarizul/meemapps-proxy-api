@@ -1,35 +1,46 @@
 @extends('layouts.admin')
-@section('title','Services')
-@section('header','Services')
+@section('title', 'Services')
+@section('header', 'Services')
+
 @section('content')
-<div style="display:flex;justify-content:space-between;margin-bottom:16px;">
-    <h2 style="margin:0;">All Services</h2>
-    <a href="{{ route('admin.services.create') }}" class="btn btn-primary">+ New Service</a>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">All Services</h4>
+    <a href="{{ route('admin.services.create') }}" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-1"></i>New Service
+    </a>
 </div>
+
 <div class="card">
-<table>
-<thead><tr><th>#</th><th>Name</th><th>URL</th><th>Sort</th><th>Active</th><th>Actions</th></tr></thead>
-<tbody>
-@forelse($services as $s)
-<tr>
-<td>{{ $s->id }}</td>
-<td>{{ $s->name }}</td>
-<td>{{ $s->url ?? $s->external_url }}</td>
-<td>{{ $s->sort_order }}</td>
-<td><span class="badge {{ $s->is_active ? 'badge-success' : 'badge-danger' }}">{{ $s->is_active ? 'Yes' : 'No' }}</span></td>
-<td>
-<a href="{{ route('admin.services.edit', $s) }}" class="btn btn-secondary" style="padding:5px 10px;font-size:12px;">Edit</a>
-<form method="POST" action="{{ route('admin.services.destroy', $s) }}" style="display:inline;" onsubmit="return confirm('Delete?')">
-@csrf @method('DELETE')
-<button class="btn btn-danger" style="padding:5px 10px;font-size:12px;">Del</button>
-</form>
-</td>
-</tr>
-@empty
-<tr><td colspan="6" style="text-align:center;color:#9ca3af;">No services yet.</td></tr>
-@endforelse
-</tbody>
-</table>
-{{ $services->links() }}
+    <div class="card-body">
+        <table id="servicesTable" class="table table-hover w-100">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>URL</th>
+                    <th>Sort</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+$('#servicesTable').DataTable({
+    ajax: { url: '{{ route('admin.services.datatable') }}', type: 'GET' },
+    columns: [
+        { data: 'id', width: '50px' },
+        { data: 'name' },
+        { data: 'url' },
+        { data: 'sort_order', width: '70px' },
+        { data: 'status', orderable: false },
+        { data: 'actions', orderable: false, searchable: false, width: '110px' },
+    ],
+    order: [[3, 'asc']],
+});
+</script>
 @endsection
