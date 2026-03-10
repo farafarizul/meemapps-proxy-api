@@ -1,43 +1,93 @@
 @extends('layouts.admin')
-@section('title','App Settings')
-@section('header','App Settings')
-@section('content')
-<div class="card">
-<form method="POST" action="{{ route('admin.app-settings.update') }}">
-@csrf @method('PUT')
-@forelse($settings as $s)
-<div class="form-group">
-<label>{{ $s->label ?? $s->key }} <code style="font-size:11px;color:#9ca3af;">{{ $s->key }}</code></label>
-@if($s->description)<p style="font-size:12px;color:#6b7280;margin:0 0 6px;">{{ $s->description }}</p>@endif
-<input class="form-control" name="settings[{{ $s->key }}]" value="{{ $s->value }}">
-</div>
-@empty
-<p style="color:#9ca3af;">No settings configured yet.</p>
-@endforelse
-@if($settings->count())
-<button class="btn btn-primary" type="submit">Save Settings</button>
-@endif
-</form>
-</div>
+@section('title', 'App Settings')
+@section('header', 'App Settings')
 
-<div class="card">
-<h3 style="margin-top:0;">Add New Setting</h3>
-<form method="POST" action="{{ route('admin.app-settings.store') }}">
-@csrf
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-<div class="form-group"><label>Key *</label><input class="form-control" name="key" placeholder="app.key" required></div>
-<div class="form-group"><label>Value</label><input class="form-control" name="value"></div>
-<div class="form-group"><label>Type</label>
-<select class="form-control" name="type">
-<option value="string">String</option>
-<option value="json">JSON</option>
-<option value="boolean">Boolean</option>
-<option value="integer">Integer</option>
-</select></div>
-<div class="form-group"><label>Label</label><input class="form-control" name="label"></div>
-</div>
-<div class="form-group"><label>Description</label><input class="form-control" name="description"></div>
-<button class="btn btn-gold" type="submit">Add Setting</button>
-</form>
+@section('content')
+<div class="row g-4">
+    <!-- Existing Settings -->
+    <div class="col-12 col-lg-8">
+        <div class="card">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-sliders me-2"></i>Current Settings</h5>
+            </div>
+            <div class="card-body p-4">
+                @if($settings->count())
+                    <form method="POST" action="{{ route('admin.app-settings.update') }}">
+                        @csrf @method('PUT')
+                        @foreach($settings as $s)
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">
+                                    {{ $s->label ?? $s->key }}
+                                    <code class="text-muted fw-normal ms-1" style="font-size:11px;">{{ $s->key }}</code>
+                                    <span class="badge bg-light text-muted border ms-1" style="font-size:10px;">{{ $s->type }}</span>
+                                </label>
+                                @if($s->description)
+                                    <p class="text-muted small mb-1">{{ $s->description }}</p>
+                                @endif
+                                <div class="input-group">
+                                    <input class="form-control" name="settings[{{ $s->key }}]" value="{{ $s->value }}">
+                                    <button type="button" class="btn btn-outline-danger"
+                                            onclick="confirmDelete('{{ route('admin.app-settings.destroy', $s) }}', {{ json_encode('Delete setting: ' . $s->key . '?') }})">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        @endforeach
+                        <button class="btn btn-primary" type="submit">
+                            <i class="bi bi-check-lg me-1"></i>Save All Settings
+                        </button>
+                    </form>
+                @else
+                    <p class="text-muted">No settings configured yet.</p>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <!-- Add New Setting -->
+    <div class="col-12 col-lg-4">
+        <div class="card">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-plus-circle me-2"></i>Add New Setting</h5>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" action="{{ route('admin.app-settings.store') }}">
+                    @csrf
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Key <span class="text-danger">*</span></label>
+                        <input class="form-control @error('key') is-invalid @enderror" name="key" value="{{ old('key') }}" placeholder="app.my_setting" required>
+                        @error('key')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Value</label>
+                        <input class="form-control @error('value') is-invalid @enderror" name="value" value="{{ old('value') }}">
+                        @error('value')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Type</label>
+                        <select class="form-select @error('type') is-invalid @enderror" name="type">
+                            @foreach(['string','json','boolean','integer'] as $t)
+                                <option value="{{ $t }}" {{ old('type', 'string') === $t ? 'selected' : '' }}>{{ ucfirst($t) }}</option>
+                            @endforeach
+                        </select>
+                        @error('type')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Label</label>
+                        <input class="form-control @error('label') is-invalid @enderror" name="label" value="{{ old('label') }}">
+                        @error('label')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Description</label>
+                        <input class="form-control @error('description') is-invalid @enderror" name="description" value="{{ old('description') }}">
+                        @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <button class="btn btn-gold w-100" type="submit">
+                        <i class="bi bi-plus-lg me-1"></i>Add Setting
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

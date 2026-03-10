@@ -42,13 +42,26 @@ Route::prefix('webview')->name('webview.')->group(function () {
 // Admin routes (auth-protected)
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
+
+    // Services (resource + datatable AJAX)
+    Route::get('/services/data', [ServiceController::class, 'datatable'])->name('services.datatable');
     Route::resource('services', ServiceController::class);
+
+    // Pages (resource + datatable AJAX)
+    Route::get('/pages/data', [PageController::class, 'datatable'])->name('pages.datatable');
     Route::resource('pages', PageController::class);
+
+    // Branches (resource + datatable AJAX)
+    Route::get('/branches/data', [BranchController::class, 'datatable'])->name('branches.datatable');
     Route::resource('branches', BranchController::class);
+
+    // Endpoint Configs (limited resource + datatable AJAX)
+    Route::get('/endpoint-configs/data', [EndpointConfigController::class, 'datatable'])->name('endpoint-configs.datatable');
     Route::resource('endpoint-configs', EndpointConfigController::class)
         ->only(['index', 'show', 'edit', 'update']);
 
     // Endpoint JSON Overrides
+    Route::get('/endpoint-overrides/data', [EndpointJsonOverrideController::class, 'datatable'])->name('endpoint-overrides.datatable');
     Route::prefix('endpoint-overrides')->name('endpoint-overrides.')->group(function () {
         Route::get('/', [EndpointJsonOverrideController::class, 'index'])->name('index');
         Route::get('/create', [EndpointJsonOverrideController::class, 'create'])->name('create');
@@ -65,7 +78,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/app-settings', [AppSettingController::class, 'store'])->name('app-settings.store');
     Route::delete('/app-settings/{appSetting}', [AppSettingController::class, 'destroy'])->name('app-settings.destroy');
 
-    // Event Caches
+    // Event Caches (+ datatable AJAX)
+    Route::get('/event-caches/data', [EventCacheController::class, 'datatable'])->name('event-caches.datatable');
     Route::get('/event-caches', [EventCacheController::class, 'index'])->name('event-caches.index');
     Route::delete('/event-caches/clear-all', [EventCacheController::class, 'destroyAll'])->name('event-caches.destroy-all');
     Route::delete('/event-caches/{eventCache}', [EventCacheController::class, 'destroy'])->name('event-caches.destroy');

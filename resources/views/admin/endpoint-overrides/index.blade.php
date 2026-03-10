@@ -1,27 +1,42 @@
 @extends('layouts.admin')
-@section('title','JSON Overrides')
-@section('header','Endpoint JSON Overrides')
+@section('title', 'JSON Overrides')
+@section('header', 'Endpoint JSON Overrides')
+
 @section('content')
-<div style="display:flex;justify-content:space-between;margin-bottom:16px;">
-<h2 style="margin:0;">JSON Overrides</h2>
-<a href="{{ route('admin.endpoint-overrides.create') }}" class="btn btn-primary">+ New Override</a>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">JSON Overrides</h4>
+    <a href="{{ route('admin.endpoint-overrides.create') }}" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-1"></i>New Override
+    </a>
 </div>
+
 <div class="card">
-<table>
-<thead><tr><th>Endpoint Key</th><th>Merge Strategy</th><th>Active</th><th>Actions</th></tr></thead>
-<tbody>
-@forelse($overrides as $o)
-<tr>
-<td><code>{{ $o->endpoint_key }}</code></td>
-<td>{{ $o->merge_strategy }}</td>
-<td><span class="badge {{ $o->is_active ? 'badge-success' : 'badge-danger' }}">{{ $o->is_active ? 'Active' : 'Inactive' }}</span></td>
-<td><a href="{{ route('admin.endpoint-overrides.edit', $o) }}" class="btn btn-secondary" style="padding:5px 10px;font-size:12px;">Edit</a></td>
-</tr>
-@empty
-<tr><td colspan="4" style="text-align:center;color:#9ca3af;">No overrides yet.</td></tr>
-@endforelse
-</tbody>
-</table>
-{{ $overrides->links() }}
+    <div class="card-body">
+        <table id="overridesTable" class="table table-hover w-100">
+            <thead class="table-light">
+                <tr>
+                    <th>Endpoint Key</th>
+                    <th>Merge Strategy</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+$('#overridesTable').DataTable({
+    ajax: { url: '{{ route('admin.endpoint-overrides.datatable') }}', type: 'GET' },
+    columns: [
+        { data: 'endpoint_key' },
+        { data: 'merge_strategy', orderable: false },
+        { data: 'status', orderable: false },
+        { data: 'actions', orderable: false, searchable: false, width: '80px' },
+    ],
+    order: [[0, 'asc']],
+});
+</script>
 @endsection
