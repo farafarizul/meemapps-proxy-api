@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Coming Soon | MEEM Gold</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #6f7a8a;
+      --line: #e8edf4;
+      --gold: #c9a54c;
+      --gold-dark: #9e7b27;
+      --primary: #173153;
+      --primary-dark: #10233b;
+      --success: #1f8b5b;
+      --success-soft: #e9f7f0;
+      --shadow: 0 10px 30px rgba(23, 49, 83, 0.08);
+      --radius: 22px;
+      --radius-sm: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at top right, rgba(201,165,76,0.18), transparent 28%),
+        linear-gradient(180deg, #f8fafc 0%, #f3f6fb 100%);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .app-shell {
+      min-height: 100vh;
+      padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 14px 16px 12px;
+      backdrop-filter: blur(14px);
+      background: rgba(245, 247, 251, 0.86);
+      border-bottom: 1px solid rgba(232, 237, 244, 0.8);
+    }
+
+    .topbar-row {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      border: 1px solid #f0d17d;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      font-weight: 800;
+      box-shadow: 0 8px 22px rgba(201, 165, 76, 0.28);
+      flex-shrink: 0;
+    }
+
+    .brand-text small {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 2px;
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .status-pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      background: rgba(23, 49, 83, 0.08);
+      white-space: nowrap;
+    }
+
+    .screen {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 16px 16px 32px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      padding: 22px 18px 18px;
+      background: linear-gradient(160deg, #18365b 0%, #10233b 100%);
+      color: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(201,165,76,0.45) 0%, rgba(201,165,76,0) 72%);
+      right: -44px;
+      top: -44px;
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+
+    .hero-badges,
+    .metric-row,
+    .action-row,
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .hero h1 {
+      margin: 14px 0 0;
+      font-size: 30px;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      margin: 10px 0 0;
+      color: rgba(255,255,255,0.82);
+      font-size: 14px;
+      line-height: 1.6;
+      max-width: 56ch;
+    }
+
+    .metric-row { margin-top: 16px; }
+
+    .metric {
+      min-width: 112px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 18px;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .metric span {
+      font-size: 12px;
+      color: rgba(255,255,255,0.74);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(232, 237, 244, 0.84);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-top: 16px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-head h2,
+    .section-head h3,
+    .quick-card h3,
+    .coming-card h2,
+    .contact-panel h3,
+    .map-card h3 {
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .section-head h2 { font-size: 18px; }
+
+    .section-head p,
+    .quick-card p,
+    .coming-copy,
+    .contact-panel p,
+    .map-card p,
+    .note-text,
+    .detail-value {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .count-pill,
+    .tag-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      color: var(--gold-dark);
+      background: #f9f2df;
+    }
+
+    .quick-grid,
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .quick-card,
+    .contact-panel,
+    .map-card,
+    .note-card {
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #ffffff 0%, #f9fbfe 100%);
+    }
+
+    .quick-card small,
+    .contact-panel small,
+    .map-card small {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .quick-card strong,
+    .contact-panel strong,
+    .map-card strong {
+      display: block;
+      font-size: 16px;
+      line-height: 1.25;
+      color: var(--text);
+    }
+
+    .coming-card {
+      position: relative;
+      overflow: hidden;
+      padding: 22px 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+    }
+
+    .coming-card::after {
+      content: "";
+      position: absolute;
+      right: -38px;
+      bottom: -38px;
+      width: 130px;
+      height: 130px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(201,165,76,0.18) 0%, rgba(201,165,76,0) 72%);
+      pointer-events: none;
+    }
+
+    .coming-card > * { position: relative; z-index: 1; }
+
+    .coming-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      background: linear-gradient(135deg, #f9f2df, #fff8ea);
+      box-shadow: inset 0 0 0 1px rgba(201,165,76,0.18);
+      margin-bottom: 14px;
+    }
+
+    .coming-card h2 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .checklist {
+      margin: 16px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .checklist li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .checklist .dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: #f9f2df;
+      color: var(--gold-dark);
+      font-size: 12px;
+      font-weight: 800;
+      margin-top: 1px;
+    }
+
+    .checklist strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .action-row {
+      margin-top: 16px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 0;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(23, 49, 83, 0.12);
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    }
+
+    .btn-secondary {
+      color: var(--primary);
+      background: rgba(23, 49, 83, 0.08);
+    }
+
+    .btn-success {
+      color: #0c5b3a;
+      background: var(--success-soft);
+    }
+
+    .details {
+      display: grid;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .detail-item {
+      padding: 12px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .detail-item:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .detail-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .detail-value {
+      margin: 0;
+      font-size: 14px;
+      color: #304056;
+      word-break: break-word;
+    }
+
+    .detail-value a {
+      color: var(--gold-dark);
+      font-weight: 700;
+    }
+
+    .map-visual {
+      display: grid;
+      place-items: center;
+      min-height: 170px;
+      margin-top: 14px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.92)),
+        repeating-linear-gradient(45deg, rgba(23,49,83,0.04), rgba(23,49,83,0.04) 10px, rgba(201,165,76,0.05) 10px, rgba(201,165,76,0.05) 20px);
+      text-align: center;
+      padding: 18px;
+    }
+
+    .map-pin {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      background: linear-gradient(135deg, var(--gold), #f0d17d);
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(201, 165, 76, 0.28);
+      margin-bottom: 12px;
+    }
+
+    .note-card {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .note-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      background: rgba(23, 49, 83, 0.08);
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 640px) {
+      .screen { padding: 20px 20px 36px; }
+      .contact-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .quick-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 420px) {
+      .quick-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .hero { padding: 26px 24px 22px; }
+      .hero h1 { font-size: 36px; }
+      .coming-card { padding: 26px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="topbar-row">
+        <div class="source-pill" onclick="close_webview_back_to_dashboard();">← Back</div>
+        <div class="brand">
+          <div class="brand-badge"><img src="../assets/icons/logo-transparent-192x192.png" style="width: 30px;" /></div>
+          <div class="brand-text">
+            <small>MEEM GOLD</small>
+            <strong>Coming Soon</strong>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <section class="screen">
+      <section class="hero">
+        <div class="hero-badges">
+          <span class="chip">✨ New Experience</span>
+          <span class="chip">📱 Mobile First</span>
+          <span class="chip">📍 HQ Support</span>
+        </div>
+        <h1>Something new is on the way</h1>
+        <p>
+          We are preparing this page for a better mobile experience. In the meantime, you can contact
+          our headquarters directly by phone, WhatsApp, or Google Maps.
+        </p>
+        <div class="metric-row">
+          <div class="metric">
+            <strong>1 HQ</strong>
+            <span>Main support point</span>
+          </div>
+          <div class="metric">
+            <strong>3 Actions</strong>
+            <span>Call, chat, map</span>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <h2>Quick access</h2>
+            <p>Fast access to HQ contact information while this page is being prepared.</p>
+          </div>
+          <span class="count-pill">Current UI</span>
+        </div>
+
+        <div class="quick-grid">
+          <div class="quick-card">
+            <small>Phone Number</small>
+            <strong>03-5523 1231</strong>
+            <p>Main line for enquiries and support.</p>
+          </div>
+          <div class="quick-card">
+            <small>WhatsApp</small>
+            <strong>+60 3-5523 1231</strong>
+            <p>Start a quick chat with HQ.</p>
+          </div>
+          <div class="quick-card">
+            <small>Location</small>
+            <strong>Shah Alam, Selangor</strong>
+            <p>Headquarters and primary contact point.</p>
+          </div>
+          <div class="quick-card">
+            <small>Google Maps</small>
+            <strong>Open Directions</strong>
+            <p>Navigate to HQ directly.</p>
+          </div>
+        </div>
+
+        <div class="action-row" style="margin-top: 14px;">
+          <a class="btn btn-primary" href="tel:0355231231">Call HQ</a>
+          <a class="btn btn-success" href="https://wa.me/60355231231" target="_blank" rel="noopener">WhatsApp HQ</a>
+          <a class="btn btn-secondary" href="https://maps.app.goo.gl/M9ewA4ksZ6RvVJ2T9" target="_blank" rel="noopener">Open HQ Map</a>
+        </div>
+      </section>
+
+      <section class="card coming-card">
+        <div class="coming-icon">🚧</div>
+        <span class="tag-pill">Coming Soon</span>
+        <h2>This page is under preparation</h2>
+        <p class="coming-copy">
+          A refreshed version of this screen is currently in progress. We are working on a cleaner,
+          faster, and more app-like experience for mobile users.
+        </p>
+
+        <ul class="checklist">
+          <li>
+            <span class="dot">1</span>
+            <div>
+              <strong>New mobile interface</strong>
+              <span class="detail-value">Optimized for in-app WebView and smaller screens.</span>
+            </div>
+          </li>
+          <li>
+            <span class="dot">2</span>
+            <div>
+              <strong>Cleaner information layout</strong>
+              <span class="detail-value">Important actions and content will be easier to access.</span>
+            </div>
+          </li>
+          <li>
+            <span class="dot">3</span>
+            <div>
+              <strong>Better user flow</strong>
+              <span class="detail-value">Designed to feel closer to a native app experience.</span>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <h2>HQ contact details</h2>
+            <p>Reach out to our headquarters directly while the page is coming soon.</p>
+          </div>
+          <span class="count-pill">Support</span>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-panel">
+            <small>Phone</small>
+            <strong><a href="tel:0355231231">03-5523 1231</a></strong>
+            <p>Call our HQ for enquiries and assistance.</p>
+          </div>
+          <div class="contact-panel">
+            <small>WhatsApp</small>
+            <strong><a href="https://wa.me/60355231231" target="_blank" rel="noopener">60355231231</a></strong>
+            <p>Send a quick message to our HQ team.</p>
+          </div>
+          <div class="contact-panel">
+            <small>Address</small>
+            <strong>MEEM Gold HQ</strong>
+            <p>2-11-2 Presint Alami, Pusat Perdagangan Worldwide 2, Seksyen 13, 40100 Shah Alam, Selangor.</p>
+          </div>
+        </div>
+
+        <div class="details">
+          <div class="detail-item">
+            <div class="detail-label">Google Maps</div>
+            <p class="detail-value"><a href="https://maps.app.goo.gl/M9ewA4ksZ6RvVJ2T9" target="_blank" rel="noopener">Open location in Google Maps</a></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card map-card">
+        <div class="section-head">
+          <div>
+            <h2>Find our HQ</h2>
+            <p>Use Google Maps to navigate directly to MEEM Gold headquarters.</p>
+          </div>
+          <span class="count-pill">Map</span>
+        </div>
+
+        <div class="map-visual">
+          <div>
+            <div class="map-pin">📍</div>
+            <strong>MEEM Gold HQ</strong>
+            <p>Shah Alam, Selangor</p>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <a class="btn btn-secondary" href="https://maps.app.goo.gl/M9ewA4ksZ6RvVJ2T9" target="_blank" rel="noopener">Open in Google Maps</a>
+        </div>
+      </section>
+
+      <section class="card note-card">
+        <div class="note-badge">ℹ️</div>
+        <div>
+          <strong>Temporary page notice</strong>
+          <p class="note-text">We are working hard to deliver the best to you</p>
+        </div>
+      </section>
+    </section>
+  </main>
+  <script>
+    const flutterScript = document.createElement('script');
+    flutterScript.src = './flutter.js?v=' + Date.now();
+    flutterScript.onload = function () {
+      console.log('flutter.js loaded');
+      // put code here that depends on flutter.js
+    };
+    document.head.appendChild(flutterScript);
+  </script>
+</body>
+</html>

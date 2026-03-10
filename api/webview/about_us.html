@@ -1,0 +1,645 @@
+<?php
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>About Us | MEEM Gold</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #6f7a8a;
+      --line: #e8edf4;
+      --gold: #c9a54c;
+      --gold-dark: #9e7b27;
+      --primary: #173153;
+      --primary-dark: #10233b;
+      --shadow: 0 10px 30px rgba(23, 49, 83, 0.08);
+      --radius: 22px;
+      --radius-sm: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at top right, rgba(201,165,76,0.18), transparent 28%),
+        linear-gradient(180deg, #f8fafc 0%, #f3f6fb 100%);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .app-shell {
+      min-height: 100vh;
+      padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 14px 16px 12px;
+      backdrop-filter: blur(14px);
+      background: rgba(245, 247, 251, 0.86);
+      border-bottom: 1px solid rgba(232, 237, 244, 0.8);
+    }
+
+    .topbar-row {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      border: 1px solid #f0d17d;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      font-weight: 800;
+      box-shadow: 0 8px 22px rgba(201, 165, 76, 0.28);
+      flex-shrink: 0;
+    }
+
+    .brand-text small {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 2px;
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .status-pill,
+    .tag-pill,
+    .chip,
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status-pill {
+      color: var(--primary);
+      background: rgba(23, 49, 83, 0.08);
+    }
+
+    .screen {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 16px 16px 32px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      padding: 22px 18px 18px;
+      background: linear-gradient(160deg, #18365b 0%, #10233b 100%);
+      color: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(201,165,76,0.45) 0%, rgba(201,165,76,0) 72%);
+      right: -56px;
+      top: -56px;
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+
+    .hero-badges,
+    .metric-row,
+    .action-row,
+    .collab-grid,
+    .team-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .hero h1 {
+      margin: 14px 0 0;
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      margin: 10px 0 0;
+      color: rgba(255,255,255,0.82);
+      font-size: 14px;
+      line-height: 1.6;
+      max-width: 60ch;
+    }
+
+    .metric-row {
+      margin-top: 16px;
+    }
+
+    .metric {
+      flex: 1 1 140px;
+      min-width: 0;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 20px;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .metric span {
+      font-size: 12px;
+      color: rgba(255,255,255,0.74);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(232, 237, 244, 0.84);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-top: 16px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-head h2,
+    .section-head h3,
+    .team-name,
+    .collection-box h3,
+    .story-visual strong {
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .section-head h2 { font-size: 20px; }
+
+    .section-head p,
+    .body-copy,
+    .team-role,
+    .collab-box,
+    .story-visual p,
+    .collection-box p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .section-tag,
+    .tag-pill {
+      color: var(--gold-dark);
+      background: #f9f2df;
+    }
+
+    .story-layout {
+      display: grid;
+      gap: 16px;
+    }
+
+    .story-visual {
+      min-height: 240px;
+      border-radius: 24px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background:
+        linear-gradient(180deg, rgba(16,35,59,0.12) 0%, rgba(16,35,59,0.46) 100%),
+        linear-gradient(135deg, #d8b36a, #8b6a25);
+      color: #fff;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .story-visual::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top right, rgba(255,255,255,0.25), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(255,255,255,0.14), transparent 34%);
+      pointer-events: none;
+    }
+
+    .story-visual > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .story-visual strong {
+      display: block;
+      font-size: 22px;
+    }
+
+    .info-grid,
+    .collab-grid,
+    .team-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .info-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .info-card,
+    .collab-box,
+    .team-card,
+    .collection-box {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #f9fbfe 100%);
+    }
+
+    .info-card {
+      padding: 14px;
+    }
+
+    .info-card small {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .info-card strong {
+      display: block;
+      font-size: 18px;
+      line-height: 1.2;
+      color: var(--gold-dark);
+    }
+
+    .info-card span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .collection-box {
+      padding: 16px;
+      background: linear-gradient(135deg, #ffffff 0%, #f8f1df 100%);
+      border-color: #eddcb4;
+    }
+
+    .collection-box h3 {
+      font-size: 20px;
+      color: var(--text);
+    }
+
+    .action-row { margin-top: 16px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 0;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(23, 49, 83, 0.12);
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    }
+
+    .btn-secondary {
+      color: var(--primary);
+      background: rgba(23, 49, 83, 0.08);
+    }
+
+    .collab-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .collab-box {
+      min-height: 86px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #7d8696;
+      font-size: 13px;
+      border-style: dashed;
+    }
+
+    .team-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .team-card {
+      padding: 16px;
+      text-align: center;
+    }
+
+    .team-avatar {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 14px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #d6b05d, #9c7728);
+      box-shadow: 0 10px 24px rgba(201, 165, 76, 0.24);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .team-avatar::after {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border-radius: 999px;
+
+    }
+
+    .team-name {
+      font-size: 17px;
+      color: var(--text);
+    }
+
+    .team-role {
+      margin-top: 4px;
+      font-size: 13px;
+    }
+
+    @media (min-width: 640px) {
+      .screen { padding: 20px 20px 36px; }
+      .collab-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (min-width: 768px) {
+      .hero { padding: 26px 24px 22px; }
+      .hero h1 { font-size: 34px; }
+      .story-layout { grid-template-columns: 1.1fr 0.9fr; align-items: stretch; }
+      .team-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    @media (min-width: 900px) {
+      .team-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="topbar-row">
+        <div class="source-pill" onclick="close_webview_back_to_dashboard();">← Back</div>
+        <div class="brand">
+          <div class="brand-badge"><img src="../assets/icons/logo-transparent-192x192.png" style="width: 30px;" /></div>
+          <div class="brand-text">
+            <small>MEEM GOLD</small>
+            <strong>About Us</strong>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <section class="screen">
+      <section class="hero">
+        <div class="hero-badges">
+          <span class="chip">Shariah-Compliant</span>
+          <span class="chip">Physical Gold</span>
+          <span class="chip">Established 2021</span>
+        </div>
+        <h1>Welcome to MEEM Gold</h1>
+        <p><strong>A wide range of physical gold products</strong> made available for customers.</p>
+        <p>We continuously focus on providing the best service to customers by offering a variety of jewellery items, gemstones, and other jewellery services in one seamless experience.</p>
+
+        <div class="metric-row">
+          <div class="metric">
+            <strong>505</strong>
+            <span>Products for sale</span>
+          </div>
+          <div class="metric">
+            <strong>120K+</strong>
+            <span>Fulfilled orders</span>
+          </div>
+          <div class="metric">
+            <strong>57K+</strong>
+            <span>Growing customers</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <span class="section-tag">Our Story</span>
+            <h2>Trusted, ethical and Shariah-compliant gold solutions</h2>
+          </div>
+        </div>
+
+        <div class="story-layout">
+          <div>
+            <p class="body-copy">MEEM Gold stands out in the gold trading industry for its steadfast adherence to Islamic finance principles. We have established in 2021 with shariah-compliant (Elzar Shariah Solutions &amp; Advisory) online saving platform that changes the way you buy, save, sell and redeem in physical gold.</p>
+            <p class="body-copy">We specialise in custom gold bars &amp; jewellery, offering great value, amazing product variety and professional friendly service.</p>
+            <p class="body-copy">Through rigorous compliance with Shariah law, the company ensures its gold products are ethically sourced, meticulously verified for purity, and free from prohibited financial practices such as interest-based transactions.</p>
+            <p class="body-copy">With a focus on transparency and customer satisfaction, MEEM Gold has established itself as a reputable provider of gold products including bars, coins, and jewelry while aligning with Islamic principles.</p>
+          </div>
+
+          <div class="story-visual">
+            <img src="./assets/gold-bar-100g.jpg" style="width: 100%; margin-bottom: 20px;" />
+            <span class="tag-pill">MEEM Gold Story</span>
+            <strong>Halal gold saving with trust and transparency</strong>
+            <p>Ethically sourced, carefully verified, and designed to support diverse investment and gifting needs.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <span class="section-tag">Highlights</span>
+            <h2>What defines the MEEM Gold experience</h2>
+          </div>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <small>Product Range</small>
+            <strong>Gold bars, coins &amp; jewellery</strong>
+            <span>Solutions designed for collecting, gifting, and long-term gold saving.</span>
+          </div>
+          <div class="info-card">
+            <small>Core Value</small>
+            <strong>Ethical &amp; verified</strong>
+            <span>Stringent purity checks and compliance processes for customer confidence.</span>
+          </div>
+          <div class="info-card">
+            <small>Customer Promise</small>
+            <strong>Transparent service</strong>
+            <span>Friendly guidance, clear processes, and support in every transaction.</span>
+          </div>
+          <div class="info-card">
+            <small>Saving Platform</small>
+            <strong>Buy, save, sell &amp; redeem</strong>
+            <span>A simpler way to manage physical gold through a Shariah-compliant approach.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card collection-box">
+        <img src="./assets/gold-bar-100g.jpg" style="width: 100%; margin-bottom: 10px; margin-top: 10px;" />
+        <h3>Beautifully crafted limited edition collections of gold bars &amp; jewellery</h3>
+        <p>Everyone deserves to shine. MEEM Gold &amp; Jewellery’s extensive collection of jewellery pieces in Malaysia is meaningfully conceptualised and beautifully crafted from gold and more, at reasonable prices.</p>
+        <p>From necklaces to rings, you can find the perfect piece for every occasion through our popular and well-loved designs.</p>
+
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <span class="section-tag">Affiliations &amp; Collaborators</span>
+            <h2>Our network and collaborations</h2>
+            <p>The original page displays multiple partner and collaborator logos. Replace the placeholders below with actual logo assets when ready.</p>
+          </div>
+        </div>
+
+        <div class="collab-grid">
+          <div class="collab-box" style="background-image: url(./assets/partner-01.jpg); background-size: cover; background-position: center;"></div>
+          <div class="collab-box" style="background-image: url(./assets/partner-02.jpg); background-size: cover; background-position: center;"></div>
+          <div class="collab-box" style="background-image: url(./assets/partner-03.jpg); background-size: cover; background-position: center;"></div>
+          <div class="collab-box" style="background-image: url(./assets/partner-04.jpg); background-size: cover; background-position: center;"></div>
+          <div class="collab-box" style="background-image: url(./assets/partner-05.jpg); background-size: cover; background-position: center;"></div>
+          <div class="collab-box" style="background-image: url(./assets/partner-06.jpg); background-size: cover; background-position: center;"></div>
+          <div class="collab-box" style="background-image: url(./assets/partner-07.jpg); background-size: cover; background-position: center;"></div>
+          <div class="collab-box" style="background-image: url(./assets/partner-08.jpg); background-size: cover; background-position: center;"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <span class="section-tag">Meet Our Team</span>
+            <h2>The people behind MEEM Gold</h2>
+            <p>We’re led by a team who constantly question, tinker, and challenge to unlock creativity around every turn.</p>
+          </div>
+        </div>
+
+        <div class="team-grid">
+          <div class="team-card">
+            <div class="team-avatar" style="background-image: url(./assets/nazri.jpg); background-size: cover; background-position: center;"></div>
+            <div class="team-name">Mohd Nazri Muid</div>
+            <div class="team-role">Executive Director</div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar" style="background-image: url(./assets/amran.jpg); background-size: cover; background-position: center;"></div>
+            <div class="team-name">Amran Bachok</div>
+            <div class="team-role">Chief Executive Officer</div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar" style="background-image: url(./assets/zhafri.jpg); background-size: cover; background-position: center;"></div>
+            <div class="team-name">Muhamad Zhafri Hilmi</div>
+            <div class="team-role">Operation Lead</div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar" style="background-image: url(./assets/auni.jpg); background-size: cover; background-position: center;"></div>
+            <div class="team-name">Auni Nafisa Rashidi</div>
+            <div class="team-role">Marketing Lead</div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar" style="background-image: url(./assets/fariesha.jpg); background-size: cover; background-position: center;"></div>
+            <div class="team-name">Puteri Nur Fariesha</div>
+            <div class="team-role">Administration Lead</div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar" style="background-image: url(./assets/farhan.jpg); background-size: cover; background-position: center;"></div>
+            <div class="team-name">Afiq Farhan Borhan</div>
+            <div class="team-role">Creative Designer</div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar" style="background-image: url(./assets/italiana.jpg); background-size: cover; background-position: center;"></div>
+            <div class="team-name">Italiana Talha</div>
+            <div class="team-role">Business Operation</div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+  <script>
+    const flutterScript = document.createElement('script');
+    flutterScript.src = './flutter.js?v=' + Date.now();
+    flutterScript.onload = function () {
+      console.log('flutter.js loaded');
+      // put code here that depends on flutter.js
+    };
+    document.head.appendChild(flutterScript);
+  </script>
+
+</body>
+</html>

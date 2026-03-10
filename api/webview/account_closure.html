@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Account Closure | Meem Gold</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #6f7a8a;
+      --line: #e8edf4;
+      --gold: #c9a54c;
+      --gold-dark: #9e7b27;
+      --primary: #173153;
+      --danger: #c56239;
+      --success: #1f8b5b;
+      --shadow: 0 10px 30px rgba(23, 49, 83, 0.08);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+      background:
+        radial-gradient(circle at top right, rgba(201,165,76,0.18), transparent 30%),
+        linear-gradient(180deg, #f8fafc 0%, #f3f6fb 100%);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 14px 16px 12px;
+      backdrop-filter: blur(14px);
+      background: rgba(245, 247, 251, 0.86);
+      border-bottom: 1px solid rgba(232, 237, 244, 0.8);
+    }
+
+    .topbar-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      border: 1px solid #f0d17d;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      box-shadow: 0 8px 22px rgba(201, 165, 76, 0.28);
+    }
+
+    .brand-text small {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      margin-bottom: 2px;
+    }
+
+    .brand-text strong {
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .source-pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      background: rgba(23, 49, 83, 0.08);
+      white-space: nowrap;
+    }
+
+    .screen {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 16px 16px 30px;
+    }
+
+    .hero {
+      background: linear-gradient(160deg, #18365b 0%, #10233b 100%);
+      color: white;
+      border-radius: 28px;
+      padding: 22px 18px 18px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(201,165,76,0.5) 0%, rgba(201,165,76,0) 70%);
+      right: -40px;
+      top: -40px;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.15;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero p {
+      position: relative;
+      z-index: 1;
+      margin: 10px 0 0;
+      color: rgba(255,255,255,0.82);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      margin-top: 16px;
+      border: 1px solid rgba(232, 237, 244, 0.8);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.2;
+    }
+
+    .section-subtitle {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .summary-panel {
+      display: grid;
+      grid-template-columns: 84px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .summary-icon {
+      width: 84px;
+      height: 84px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, #fee9d8, #f0b06d);
+      color: #8f4e18;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 28px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+    }
+
+    .summary-panel h2 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    .body-copy {
+      margin-top: 12px;
+      font-size: 14px;
+      line-height: 1.65;
+      color: #314057;
+    }
+
+    .alert-box {
+      padding: 14px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fff7f2 0%, #fff 100%);
+      border: 1px solid rgba(197, 98, 57, 0.18);
+      margin-top: 14px;
+    }
+
+    .alert-box strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--danger);
+      font-size: 14px;
+    }
+
+    .info-list,
+    .terms-list,
+    .check-list {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .info-list li,
+    .terms-list li,
+    .check-list li {
+      margin: 0 0 10px;
+      color: #36455d;
+      font-size: 14px;
+      line-height: 1.58;
+    }
+
+    .steps {
+      display: grid;
+      gap: 12px;
+    }
+
+    .step-item {
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 18px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+    }
+
+    .step-number {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #f5d985, #cc9d2f);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .step-item h3,
+    .reseller-card h3,
+    .contact-card h3 {
+      margin: 0 0 6px;
+      font-size: 17px;
+      line-height: 1.35;
+    }
+
+    .step-item p,
+    .contact-card p,
+    .reseller-card p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .mini-note {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(23, 49, 83, 0.05);
+      color: #30415d;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+
+    .btn:active { transform: scale(0.98); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), #e0bf68);
+      color: #1a2333;
+    }
+
+    .btn-secondary {
+      background: rgba(23,49,83,0.08);
+      color: var(--primary);
+      border: 1px solid rgba(23,49,83,0.08);
+    }
+
+    .btn-dark {
+      background: rgba(255,255,255,0.12);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .tag {
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: white;
+      border: 1px solid var(--line);
+      font-size: 12px;
+      font-weight: 700;
+      color: #4c5b71;
+    }
+
+    .email-box {
+      margin-top: 12px;
+      padding: 13px 14px;
+      border-radius: 16px;
+      background: #fff;
+      border: 1px dashed #c9d6e7;
+    }
+
+    .email-box strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 12px;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .email-box span {
+      display: block;
+      font-size: 15px;
+      color: #2d3c54;
+      word-break: break-word;
+    }
+
+    .terms-list {
+      margin-top: 2px;
+      padding-left: 20px;
+    }
+
+    .reseller-card {
+      background: linear-gradient(165deg, rgba(23,49,83,1) 0%, rgba(18,39,66,1) 100%);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reseller-card::after {
+      content: "";
+      position: absolute;
+      right: -22px;
+      bottom: -22px;
+      width: 110px;
+      height: 110px;
+      border-radius: 999px;
+      background: rgba(201,165,76,0.24);
+    }
+
+    .reseller-card p { color: rgba(255,255,255,0.82); }
+
+    .contact-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .contact-item {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+    }
+
+    .contact-item strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+      color: var(--primary);
+    }
+
+    .contact-item span {
+      font-size: 14px;
+      line-height: 1.55;
+      color: #425168;
+      display: block;
+      white-space: pre-line;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 18px 8px 4px;
+      line-height: 1.55;
+    }
+
+    @media (min-width: 768px) {
+      .screen { padding: 22px 20px 36px; }
+      .hero { padding: 28px 24px 22px; }
+      .contact-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="topbar-row">
+        <div class="source-pill" onclick="close_webview_back_to_dashboard();">← Back</div>
+        <div class="brand">
+          <div class="brand-badge"><img src="../assets/icons/logo-transparent-192x192.png" style="width: 30px;" /></div>
+          <div class="brand-text">
+            <small>MEEM GOLD</small>
+            <strong>Account Closure</strong>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <main class="screen">
+      <section class="hero">
+        <h1>MEEM Gold Account Closure</h1>
+        <p>
+          Simple mobile page for the account closure process with the same app-style visual layout,
+          focused on key steps, terms, and support details for faster action inside a WebView.
+        </p>
+      </section>
+
+      <section class="card">
+        <div class="summary-panel">
+          <div class="summary-icon">×</div>
+          <div>
+            <h2>Important Information for Account Closure</h2>
+            <p class="body-copy">
+              Before proceeding, users should review the account closure requirements carefully.
+              Closing the account is final and will permanently end related payout incentives, bonuses,
+              and inherited benefits.
+            </p>
+          </div>
+        </div>
+
+        <div class="alert-box">
+          <strong>Before you proceed</strong>
+          <ul class="info-list">
+            <li>Please ensure you have read and understood the terms and conditions for account closure.</li>
+            <li>Closing your account will permanently remove and terminate any payout incentives, bonuses, and other benefits you or your nominator should receive and inherit.</li>
+            <li>KBSE Bullion Sdn. Bhd. will not be responsible for any future claims regarding this account by you or any other parties.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Steps to Close Your Account</h2>
+            <p class="section-subtitle">Follow the process below before submitting the application.</p>
+          </div>
+        </div>
+
+        <div class="steps">
+          <article class="step-item">
+            <div class="step-number">1</div>
+            <div>
+              <h3>Download the Account Closure Form (MF013)</h3>
+              <p>Download the official “Application For MEEM Gold Account’s Closing (MF013)” form.</p>
+              <div class="btn-row">
+                <a class="btn btn-primary" href="https://meem.com.my/files/account_closure_MF013.pdf" target="_blank" rel="noopener">Download MF013</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="step-item">
+            <div class="step-number">2</div>
+            <div>
+              <h3>Complete the Form</h3>
+              <p>Print the downloaded form, fill in all required details accurately, then sign and date the form.</p>
+              <div class="mini-note">Checklist documents</div>
+              <div class="tag-row">
+                <span class="tag">Identification Card</span>
+                <span class="tag">Death Certificate (if applicable)</span>
+                <span class="tag">MF008 Form (if applicable)</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="step-item">
+            <div class="step-number">3</div>
+            <div>
+              <h3>Email the Completed Form</h3>
+              <p>Once the form is fully completed, signed, and all necessary documents are attached, submit it to the official email address shown on the account closure page.</p>
+              <div class="email-box">
+                <strong>Official email </strong>
+                <span>mail@kbsebullion.my</span>
+              </div>
+              <div class="btn-row">
+                <a class="btn btn-secondary" href="tel:+60355231231">Call 03-5523 1231</a>
+                <a class="btn btn-secondary" href="https://api.whatsapp.com/send?phone=60355231231" target="_blank" rel="noopener">WhatsApp</a>
+              </div>
+              <div class="mini-note">Please also notify your application by calling 03-5523 1231.</div>
+            </div>
+          </article>
+
+          <article class="step-item">
+            <div class="step-number">4</div>
+            <div>
+              <h3>Processing Time</h3>
+              <p>Your application will be processed within seven (7) working days after it is received.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="card" id="terms">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Terms and Conditions</h2>
+            <p class="section-subtitle">Summary of the closure terms listed on the page.</p>
+          </div>
+        </div>
+
+        <ol class="terms-list">
+          <li>Applicants are required to notify KBSE Bullion Sdn. Bhd. by contacting 03-5523 1231 and submitting the fully completed form to the official email address listed on the page.</li>
+          <li>The application will be processed within seven (7) working days from the date of receipt.</li>
+          <li>KBSE Bullion Sdn. Bhd. reserves the right to reject any application deemed inappropriate or doubtful.</li>
+          <li>By submitting the application, the applicant acknowledges and agrees that the closure of the MEEM Gold account is final and irreversible, and all associated benefits, incentives, and bonuses will be permanently forfeited from the effective date of closure.</li>
+          <li>All personal information provided in the application will be handled in accordance with KBSE Bullion Sdn. Bhd.’s Privacy Policy and applicable data protection laws.</li>
+          <li>These terms and conditions shall be governed by and construed in accordance with the laws of Malaysia.</li>
+        </ol>
+      </section>
+
+
+
+      <section class="card contact-card">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Contact & Branch Numbers</h2>
+            <p class="section-subtitle">Official support and branch information shown on the page.</p>
+          </div>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-item">
+            <strong>Head Office</strong>
+            <span>03-5523 1231
+2-11-2 Presint Alami, Pusat Perdagangan Worldwide 2
+Seksyen 13, 40100 Shah Alam, Selangor</span>
+          </div>
+          <div class="contact-item">
+            <strong>Northern Branches</strong>
+            <span>04-917 2347 — Jitra
+04-736 4291 — Alor Setar
+04-521 2311 — Bertam</span>
+          </div>
+          <div class="contact-item">
+            <strong>Central & South</strong>
+            <span>03-8928 9596 — Bangi
+07-364 6534 — Johor</span>
+          </div>
+          <div class="contact-item">
+            <strong>Quick Access</strong>
+            <span>Phone: 03-5523 1231
+WhatsApp: Meem Gold Shah Alam
+Form: MF013 Account Closure</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer-note">
+        KBSE Bullion Sdn. Bhd. • MEEM Gold Account Closure • Mobile-first static HTML page
+      </div>
+    </main>
+  </div>
+  <script>
+    const flutterScript = document.createElement('script');
+    flutterScript.src = './flutter.js?v=' + Date.now();
+    flutterScript.onload = function () {
+      console.log('flutter.js loaded');
+      // put code here that depends on flutter.js
+    };
+    document.head.appendChild(flutterScript);
+  </script>
+</body>
+</html>

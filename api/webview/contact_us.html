@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Contact Us | MEEM Gold</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #6f7a8a;
+      --line: #e8edf4;
+      --gold: #c9a54c;
+      --gold-dark: #9e7b27;
+      --primary: #173153;
+      --primary-dark: #10233b;
+      --success: #1f8b5b;
+      --success-soft: #e9f7f0;
+      --shadow: 0 10px 30px rgba(23, 49, 83, 0.08);
+      --radius: 22px;
+      --radius-sm: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at top right, rgba(201,165,76,0.18), transparent 28%),
+        linear-gradient(180deg, #f8fafc 0%, #f3f6fb 100%);
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { width: 100%; display: block; }
+
+    .app-shell {
+      min-height: 100vh;
+      padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 14px 16px 12px;
+      backdrop-filter: blur(14px);
+      background: rgba(245, 247, 251, 0.86);
+      border-bottom: 1px solid rgba(232, 237, 244, 0.8);
+    }
+
+    .topbar-row {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      border: 1px solid #f0d17d;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      font-weight: 800;
+      box-shadow: 0 8px 22px rgba(201, 165, 76, 0.28);
+      flex-shrink: 0;
+    }
+
+    .brand-text small {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 2px;
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .status-pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      background: rgba(23, 49, 83, 0.08);
+      white-space: nowrap;
+    }
+
+    .screen {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 16px 16px 32px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      padding: 22px 18px 18px;
+      background: linear-gradient(160deg, #18365b 0%, #10233b 100%);
+      color: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(201,165,76,0.45) 0%, rgba(201,165,76,0) 72%);
+      right: -44px;
+      top: -44px;
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+
+    .hero-badges,
+    .info-chips,
+    .branch-meta,
+    .action-row,
+    .metric-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .hero h1 {
+      margin: 14px 0 0;
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      margin: 10px 0 0;
+      color: rgba(255,255,255,0.82);
+      font-size: 14px;
+      line-height: 1.6;
+      max-width: 56ch;
+    }
+
+    .metric-row { margin-top: 16px; }
+
+    .metric {
+      min-width: 112px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 18px;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .metric span {
+      font-size: 12px;
+      color: rgba(255,255,255,0.74);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(232, 237, 244, 0.84);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-top: 16px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-head h2,
+    .section-head h3,
+    .location-content h3,
+    .location-content h2,
+    .quick-card h3 {
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .section-head h2 { font-size: 18px; }
+    .section-head p,
+    .support-copy,
+    .location-description,
+    .detail-value,
+    .filter-note,
+    .empty-state p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .count-pill,
+    .state-pill,
+    .tag-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .count-pill,
+    .tag-pill {
+      color: var(--gold-dark);
+      background: #f9f2df;
+    }
+
+    .state-pill {
+      color: var(--primary);
+      background: rgba(23, 49, 83, 0.08);
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .quick-card {
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #ffffff 0%, #f9fbfe 100%);
+    }
+
+    .quick-card small {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .quick-card strong {
+      display: block;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .quick-card p {
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .toolbar {
+      display: grid;
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 0.01em;
+    }
+
+    .control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 52px;
+      padding: 0 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #fff;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+    }
+
+    .control span {
+      font-size: 18px;
+      line-height: 1;
+      opacity: 0.72;
+      flex-shrink: 0;
+    }
+
+    .control input,
+    .control select {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 15px;
+      font-family: inherit;
+      appearance: none;
+    }
+
+    .filter-note {
+      margin-top: 12px;
+    }
+
+    .section-stack { display: grid; gap: 16px; }
+
+    .location-card {
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .location-image {
+      position: relative;
+      min-height: 220px;
+      background: linear-gradient(135deg, #d8b36a, #8b6a25);
+    }
+
+    .location-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(16,35,59,0.06) 0%, rgba(16,35,59,0.26) 100%),
+        radial-gradient(circle at top right, rgba(255,255,255,0.22), transparent 28%);
+      pointer-events: none;
+    }
+
+    .location-image img {
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .location-content {
+      padding: 18px;
+    }
+
+    .location-content h2 { font-size: 22px; }
+    .location-content h3 { font-size: 20px; }
+
+    .branch-meta { margin-bottom: 12px; }
+
+    .location-description { margin-bottom: 14px; }
+
+    .details {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .detail-item {
+      padding: 12px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .detail-item:first-child { border-top: 0; padding-top: 0; }
+
+    .detail-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .detail-value {
+      margin: 0;
+      font-size: 14px;
+      color: #304056;
+      word-break: break-word;
+    }
+
+    .detail-value a {
+      color: var(--gold-dark);
+      font-weight: 700;
+    }
+
+    .action-row {
+      margin-top: 16px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 0;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(23, 49, 83, 0.12);
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    }
+
+    .btn-secondary {
+      color: var(--primary);
+      background: rgba(23, 49, 83, 0.08);
+    }
+
+    .btn-success {
+      color: #0c5b3a;
+      background: var(--success-soft);
+    }
+
+    .branches-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .empty-state {
+      display: none;
+      text-align: center;
+      padding: 22px 18px;
+      border-radius: 18px;
+      border: 1px dashed #d4deea;
+      background: linear-gradient(180deg, #ffffff 0%, #f9fbfe 100%);
+    }
+
+    .empty-state strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+
+    .support-card {
+      display: grid;
+      gap: 16px;
+    }
+
+    .support-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .support-panel {
+      padding: 14px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #f9fbfe 100%);
+      border: 1px solid var(--line);
+    }
+
+    .support-panel small {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .support-panel strong {
+      display: block;
+      font-size: 16px;
+      line-height: 1.3;
+    }
+
+    .support-panel p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .hidden-card { display: none !important; }
+
+    @media (min-width: 640px) {
+      .screen { padding: 20px 20px 36px; }
+      .toolbar { grid-template-columns: 1.2fr 0.8fr; }
+      .support-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .quick-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .location-image { min-height: 260px; }
+    }
+
+    @media (min-width: 768px) {
+      .hero { padding: 26px 24px 22px; }
+      .hero h1 { font-size: 34px; }
+      .location-card {
+        display: grid;
+        grid-template-columns: 290px 1fr;
+      }
+      .location-image { min-height: 100%; }
+      .location-content { padding: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="topbar-row">
+        <div class="source-pill" onclick="close_webview_back_to_dashboard();">← Back</div>
+        <div class="brand">
+          <div class="brand-badge"><img src="../assets/icons/logo-transparent-192x192.png" style="width: 30px;" /></div>
+          <div class="brand-text">
+            <small>MEEM GOLD</small>
+            <strong>Contact Us</strong>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <section class="screen">
+      <section class="hero">
+        <div class="hero-badges">
+          <span class="chip">📍 HQ &amp; Branches</span>
+          <span class="chip">📱 Mobile Friendly</span>
+          <span class="chip">⚡ Quick Actions</span>
+        </div>
+        <h1>Visit MEEM Gold near you</h1>
+        <p>
+          Find our headquarters and branch locations across Malaysia. Search by branch, city, or address,
+          then call, WhatsApp, or open maps directly from the card.
+        </p>
+        <div class="metric-row">
+          <div class="metric">
+            <strong>1 HQ</strong>
+            <span>Main contact point</span>
+          </div>
+          <div class="metric">
+            <strong>5 Branches</strong>
+            <span>Across 4 states</span>
+          </div>
+          <div class="metric">
+            <strong>3 Actions</strong>
+            <span>Call, WhatsApp, Map</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <h2>Quick access</h2>
+            <p>Fast access to the main contact channels and coverage summary.</p>
+          </div>
+          <span class="count-pill">Current UI</span>
+        </div>
+
+        <div class="quick-grid">
+          <div class="quick-card">
+            <small>Main line</small>
+            <strong>03-5523 1231</strong>
+            <p>Direct line for HQ enquiries and support.</p>
+          </div>
+          <div class="quick-card">
+            <small>States</small>
+            <strong>Selangor, Kedah</strong>
+            <p>Also available in Pulau Pinang and Johor.</p>
+          </div>
+          <div class="quick-card">
+            <small>Search</small>
+            <strong>Branch or city</strong>
+            <p>Search by location name, city, or address.</p>
+          </div>
+          <div class="quick-card">
+            <small>Actions</small>
+            <strong>Call · WhatsApp</strong>
+            <p>Open map links directly from each location.</p>
+          </div>
+        </div>
+
+        <div class="action-row" style="margin-top: 14px;">
+          <a class="btn btn-primary" href="tel:0355231231">Call HQ</a>
+          <a class="btn btn-success" href="https://wa.me/60355231231" target="_blank" rel="noopener">WhatsApp HQ</a>
+          <a class="btn btn-secondary" href="https://maps.app.goo.gl/M9ewA4ksZ6RvVJ2T9" target="_blank" rel="noopener">Open HQ Map</a>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <h2>Find a location</h2>
+            <p>Use the search and state filter to narrow the branch list.</p>
+          </div>
+          <span class="count-pill">Smart Filter</span>
+        </div>
+
+        <div class="toolbar">
+          <div class="field">
+            <label for="branchSearch">Search location</label>
+            <div class="control">
+              <span>🔎</span>
+              <input type="text" id="branchSearch" placeholder="Search branch, city or address" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="stateFilter">Filter by state</label>
+            <div class="control">
+              <span>📌</span>
+              <select id="stateFilter">
+                <option value="all">All States</option>
+                <option value="Selangor">Selangor</option>
+                <option value="Kedah">Kedah</option>
+                <option value="Pulau Pinang">Pulau Pinang</option>
+                <option value="Johor">Johor</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <p class="filter-note">Showing <strong id="resultCount">6</strong> matching location(s).</p>
+      </section>
+
+      <section class="section-stack">
+        <article class="card location-card location-item" data-state="Selangor" data-search="meem gold hq shah alam selangor pusat perdagangan worldwide seksyen 13 hq headquarters">
+          <div class="location-image">
+            <img src="./assets/featured_meem_gold_hq-800x500.png" alt="MEEM Gold HQ" />
+          </div>
+          <div class="location-content">
+            <div class="branch-meta">
+              <span class="tag-pill">Headquarters</span>
+              <span class="state-pill">Selangor</span>
+            </div>
+            <h2>MEEM Gold HQ</h2>
+            <p class="location-description">Our main headquarters is the primary contact point for MEEM Gold. You can reach the HQ directly for enquiries, support, and store visits.</p>
+
+            <div class="details">
+              <div class="detail-item">
+                <div class="detail-label">Phone</div>
+                <p class="detail-value"><a href="tel:0355231231">03-5523 1231</a></p>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Address</div>
+                <p class="detail-value">2-11-2 Presint Alami, Pusat Perdagangan Worldwide 2, Seksyen 13, 40100 Shah Alam, Selangor.</p>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Google Maps</div>
+                <p class="detail-value"><a href="https://maps.app.goo.gl/M9ewA4ksZ6RvVJ2T9" target="_blank" rel="noopener">Open location in Google Maps</a></p>
+              </div>
+            </div>
+
+            <div class="action-row">
+              <a class="btn btn-primary" href="tel:0355231231">Call HQ</a>
+              <a class="btn btn-success" href="https://wa.me/60355231231" target="_blank" rel="noopener">WhatsApp</a>
+              <a class="btn btn-secondary" href="https://maps.app.goo.gl/M9ewA4ksZ6RvVJ2T9" target="_blank" rel="noopener">Open Map</a>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <h2>Our Branches</h2>
+            <p>Explore branches and contact the location nearest to you.</p>
+          </div>
+          <span class="count-pill">Branch Listing</span>
+        </div>
+
+        <div class="branches-list" id="branchListing">
+          <article class="location-card location-item" data-state="Kedah" data-search="meem gold jitra kedah jalan pj 2/2 pekan jitra 2 06000 jitra">
+            <div class="location-image">
+              <img src="./assets/featured_meem_gold_jitra-800x500.png" alt="MEEM Gold Jitra" />
+            </div>
+            <div class="location-content">
+              <div class="branch-meta">
+                <span class="tag-pill">Branch</span>
+                <span class="state-pill">Kedah</span>
+              </div>
+              <h3>MEEM Gold Jitra</h3>
+              <p class="location-description">Jitra, Kedah</p>
+              <div class="details">
+                <div class="detail-item">
+                  <div class="detail-label">Phone</div>
+                  <p class="detail-value"><a href="tel:049172347">04-917 2347</a></p>
+                </div>
+                <div class="detail-item">
+                  <div class="detail-label">Address</div>
+                  <p class="detail-value">260, Jalan PJ 2/2, Pekan Jitra 2, 06000 Jitra, Kedah</p>
+                </div>
+                <div class="detail-item">
+                  <div class="detail-label">Google Maps</div>
+                  <p class="detail-value"><a href="https://maps.app.goo.gl/nYAxuPs8uFAjGMrD7" target="_blank" rel="noopener">Open location in Google Maps</a></p>
+                </div>
+              </div>
+              <div class="action-row">
+                <a class="btn btn-primary" href="tel:049172347">Call Branch</a>
+                <a class="btn btn-success" href="https://wa.me/6049172347" target="_blank" rel="noopener">WhatsApp</a>
+                <a class="btn btn-secondary" href="https://maps.app.goo.gl/nYAxuPs8uFAjGMrD7" target="_blank" rel="noopener">Open Map</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="location-card location-item" data-state="Kedah" data-search="meem gold alor setar kedah jalan shahab 4 shahab perdana 05150 alor setar">
+            <div class="location-image">
+              <img src="./assets/featured_meem_gold_alor_setar-800x500.png" alt="MEEM Gold Alor Setar" />
+            </div>
+            <div class="location-content">
+              <div class="branch-meta">
+                <span class="tag-pill">Branch</span>
+                <span class="state-pill">Kedah</span>
+              </div>
+              <h3>MEEM Gold Alor Setar</h3>
+              <p class="location-description">Alor Setar, Kedah</p>
+              <div class="details">
+                <div class="detail-item">
+                  <div class="detail-label">Phone</div>
+                  <p class="detail-value"><a href="tel:047364291">04-736 4291</a></p>
+                </div>
+                <div class="detail-item">
+                  <div class="detail-label">Address</div>
+                  <p class="detail-value">216, Jalan Shahab 4, Shahab Perdana, 05150 Alor Setar, Kedah</p>
+                </div>
+                <div class="detail-item">
+                  <div class="detail-label">Google Maps</div>
+                  <p class="detail-value"><a href="https://maps.app.goo.gl/7JhwJtLtUAJcKGiE9" target="_blank" rel="noopener">Open location in Google Maps</a></p>
+                </div>
+              </div>
+              <div class="action-row">
+                <a class="btn btn-primary" href="tel:047364291">Call Branch</a>
+                <a class="btn btn-success" href="https://wa.me/6047364291" target="_blank" rel="noopener">WhatsApp</a>
+                <a class="btn btn-secondary" href="https://maps.app.goo.gl/7JhwJtLtUAJcKGiE9" target="_blank" rel="noopener">Open Map</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="location-card location-item" data-state="Pulau Pinang" data-search="meem gold bertam pulau pinang kepala batas jalan dagangan 13 pusat bandar bertam perdana 13200">
+            <div class="location-image">
+              <img src="./assets/featured_meem_gold_bertam-800x500.png" alt="MEEM Gold Bertam" />
+            </div>
+            <div class="location-content">
+              <div class="branch-meta">
+                <span class="tag-pill">Branch</span>
+                <span class="state-pill">Pulau Pinang</span>
+              </div>
+              <h3>MEEM Gold Bertam</h3>
+              <p class="location-description">Kepala Batas, Pulau Pinang</p>
+              <div class="details">
+                <div class="detail-item">
+                  <div class="detail-label">Phone</div>
+                  <p class="detail-value"><a href="tel:045212311">04-521 2311</a></p>
+                </div>
+                <div class="detail-item">
+                  <div class="detail-label">Address</div>
+                  <p class="detail-value">15, Jalan Dagangan 13, Pusat Bandar Bertam Perdana, 13200 Kepala Batas, Pulau Pinang</p>
+                </div>
+                <div class="detail-item">
+                  <div class="detail-label">Google Maps</div>
+                  <p class="detail-value"><a href="https://maps.app.goo.gl/HuN5JpJ7CEeyW1xD8" target="_blank" rel="noopener">Open location in Google Maps</a></p>
+                </div>
+              </div>
+              <div class="action-row">
+                <a class="btn btn-primary" href="tel:045212311">Call Branch</a>
+                <a class="btn btn-success" href="https://wa.me/6045212311" target="_blank" rel="noopener">WhatsApp</a>
+                <a class="btn btn-secondary" href="https://maps.app.goo.gl/HuN5JpJ7CEeyW1xD8" target="_blank" rel="noopener">Open Map</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="location-card location-item" data-state="Selangor" data-search="meem gold bangi selangor bandar baru bangi jalan 9/2 seksyen 9 43650">
+            <div class="location-image">
+              <img src="./assets/featured_meem_gold_bangi-800x500.png" alt="MEEM Gold Bangi" />
+            </div>
+            <div class="location-content">
+              <div class="branch-meta">
+                <span class="tag-pill">Branch</span>
+                <span class="state-pill">Selangor</span>
+              </div>
+              <h3>MEEM Gold Bangi</h3>
+              <p class="location-description">Bandar Baru Bangi, Selangor</p>
+              <div class="details">
+                <div class="detail-item">
+                  <div class="detail-label">Phone</div>
+                  <p class="detail-value"><a href="tel:0389289596">03-8928 9596</a></p>
+                </div>
+                <div class="detail-item">
+                  <div class="detail-label">Address</div>
+                  <p class="detail-value">5A (1st Floor), Jalan 9/2, Seksyen 9, 43650 Bandar Baru Bangi, Selangor</p>
+                </div>
+                <div class="detail-item">
+                  <div class="detail-label">Google Maps</div>
+                  <p class="detail-value"><a href="https://maps.app.goo.gl/oSixWiFQEP3YsHHeA" target="_blank" rel="noopener">Open location in Google Maps</a></p>
+                </div>
+              </div>
+              <div class="action-row">
+                <a class="btn btn-primary" href="tel:0389289596">Call Branch</a>
+                <a class="btn btn-success" href="https://wa.me/60389289596" target="_blank" rel="noopener">WhatsApp</a>
+                <a class="btn btn-secondary" href="https://maps.app.goo.gl/oSixWiFQEP3YsHHeA" target="_blank" rel="noopener">Open Map</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="location-card location-item" data-state="Johor" data-search="meem gold johor johor bahru bandar dato onn jln perjiranan 4/5 81100 johor darul tazim">
+            <div class="location-image">
+              <img src="./assets/featured_meem_gold_johor-800x500.png" alt="MEEM Gold Johor" />
+            </div>
+            <div class="location-content">
+              <div class="branch-meta">
+                <span class="tag-pill">Branch</span>
+                <span class="state-pill">Johor</span>
+              </div>
+              <h3>MEEM Gold Johor</h3>
+              <p class="location-description">Johor Bahru, Johor</p>
+              <div class="details">
+                <div class="detail-item">
+                  <div class="detail-label">Phone</div>
+                  <p class="detail-value"><a href="tel:073646534">07-364 6534</a></p>
+                </div>
+                <div class="detail-item">
+                  <div class="detail-label">Address</div>
+                  <p class="detail-value">35, Jln Perjiranan 4/5, Bandar Dato Onn, 81100 Johor Bahru, Johor Darul Ta'zim</p>
+                </div>
+                <div class="detail-item">
+                  <div class="detail-label">Google Maps</div>
+                  <p class="detail-value"><a href="https://maps.app.goo.gl/KRCgQpKVrU1naCpJ9" target="_blank" rel="noopener">Open location in Google Maps</a></p>
+                </div>
+              </div>
+              <div class="action-row">
+                <a class="btn btn-primary" href="tel:073646534">Call Branch</a>
+                <a class="btn btn-success" href="https://wa.me/6073646534" target="_blank" rel="noopener">WhatsApp</a>
+                <a class="btn btn-secondary" href="https://maps.app.goo.gl/KRCgQpKVrU1naCpJ9" target="_blank" rel="noopener">Open Map</a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="empty-state" id="emptyState">
+          <strong>No branch found</strong>
+          <p>Try a different branch name, city, or state filter.</p>
+        </div>
+      </section>
+
+      <section class="card support-card">
+        <div class="section-head">
+          <div>
+            <h2>Need help fast?</h2>
+            <p>Use the main support channels below for quick follow-up.</p>
+          </div>
+          <span class="count-pill">Support</span>
+        </div>
+
+        <div class="support-grid">
+          <div class="support-panel">
+            <small>Headquarters</small>
+            <strong>03-5523 1231</strong>
+            <p>Main line for enquiries, support, and store visits.</p>
+          </div>
+          <div class="support-panel">
+            <small>Address</small>
+            <strong>Shah Alam, Selangor</strong>
+            <p>2-11-2 Presint Alami, Pusat Perdagangan Worldwide 2, Seksyen 13, 40100 Shah Alam.</p>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <a class="btn btn-primary" href="tel:0355231231">Call Now</a>
+          <a class="btn btn-success" href="https://wa.me/60355231231" target="_blank" rel="noopener">WhatsApp Now</a>
+          <a class="btn btn-secondary" href="https://maps.app.goo.gl/M9ewA4ksZ6RvVJ2T9" target="_blank" rel="noopener">Open Directions</a>
+        </div>
+      </section>
+    </section>
+  </main>
+  <script>
+    const flutterScript = document.createElement('script');
+    flutterScript.src = './flutter.js?v=' + Date.now();
+    flutterScript.onload = function () {
+      console.log('flutter.js loaded');
+      // put code here that depends on flutter.js
+    };
+    document.head.appendChild(flutterScript);
+  </script>
+  <script>
+    (function () {
+      const searchInput = document.getElementById('branchSearch');
+      const stateFilter = document.getElementById('stateFilter');
+      const locationItems = Array.from(document.querySelectorAll('.location-item'));
+      const branchItems = Array.from(document.querySelectorAll('#branchListing .location-item'));
+      const emptyState = document.getElementById('emptyState');
+      const resultCount = document.getElementById('resultCount');
+      const visibleCount = document.getElementById('visibleCount');
+
+      function filterLocations() {
+        const keyword = (searchInput.value || '').toLowerCase().trim();
+        const selectedState = stateFilter.value;
+        let matches = 0;
+        let branchMatches = 0;
+
+        locationItems.forEach((item) => {
+          const searchText = (item.getAttribute('data-search') || '').toLowerCase();
+          const itemState = item.getAttribute('data-state') || '';
+          const keywordMatch = keyword === '' || searchText.includes(keyword);
+          const stateMatch = selectedState === 'all' || itemState === selectedState;
+          const isVisible = keywordMatch && stateMatch;
+
+          item.classList.toggle('hidden-card', !isVisible);
+          if (isVisible) {
+            matches += 1;
+            if (branchItems.includes(item)) branchMatches += 1;
+          }
+        });
+
+        resultCount.textContent = String(matches);
+        visibleCount.textContent = String(matches);
+        emptyState.style.display = branchMatches === 0 ? 'block' : 'none';
+      }
+
+      searchInput.addEventListener('input', filterLocations);
+      stateFilter.addEventListener('change', filterLocations);
+      filterLocations();
+    })();
+  </script>
+</body>
+</html>
